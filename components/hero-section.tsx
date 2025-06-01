@@ -91,7 +91,7 @@ export default function ArtistBanner() {
               <Link href="/gallery" passHref>
                 <motion.button
                   variants={textItem}
-                  className="px-6 py-2 sm:px-8 sm:py-3 bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors text-sm sm:text-base"
+                  className="px-6 py-2 mt-12 sm:px-8 sm:py-3 bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
