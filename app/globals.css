@@ -1,0 +1,294 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fix light mode colors and theme transitions */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 24 5.4% 63.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.4% 63.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply transition-colors duration-300;
+  }
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    cursor: none;
+  }
+
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+/* Theme-aware backgrounds */
+.theme-bg-primary {
+  @apply bg-background;
+}
+
+.theme-bg-secondary {
+  @apply bg-muted;
+}
+
+.theme-bg-card {
+  @apply bg-card/80;
+}
+
+.theme-text-primary {
+  @apply text-foreground;
+}
+
+.theme-text-secondary {
+  @apply text-muted-foreground;
+}
+
+.theme-text-muted {
+  @apply text-muted-foreground/70;
+}
+
+/* Hide default cursor only on desktop */
+@media (min-width: 768px) {
+  * {
+    cursor: none !important;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar - theme aware */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #ff5757, #8a2be2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #ff1493, #00bfff);
+}
+
+/* Colorful selection */
+::selection {
+  background: linear-gradient(45deg, #ff5757, #8a2be2);
+  color: white;
+}
+
+/* Animated gradient backgrounds */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* Paint splatter animation */
+@keyframes paint-splatter {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.6;
+  }
+}
+
+.paint-splatter {
+  animation: paint-splatter 2s ease-in-out infinite;
+}
+
+/* Theme transition animations */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* From Uiverse.io by alexreyes091 */ 
+.btn {
+  padding: 1rem 2rem;
+  font-weight: 700;
+  background: rgb(255, 255, 255);
+  color: blueviolet;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  border-bottom: 2px solid rgba(137, 43, 226, 0.377);
+  border-right: 2px solid blueviolet;
+  border-top: 2px solid rgb(95, 59, 224);
+  border-left: 2px solid rgba(216, 137, 205, 0.575);
+  transition-duration: 1s;
+  transition-property: border-top, border-left, border-bottom, border-right,
+    box-shadow;
+}
+
+.btn:hover {
+  border-top: 2px solid rgba(137, 43, 226, 0.473);
+  border-left: 2px solid blueviolet;
+  border-bottom: 2px solid rgb(238, 103, 238);
+  border-right: 2px solid rgb(238, 103, 238);
+  box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+    rgba(240, 46, 170, 0.2) 15px 15px;
+}
+
+.hovered-by-cursor {
+  transition: transform 0.3s ease, color 0.3s ease;
+  transform: scale(1.01);
+  color: #b3085d; /* Deep pink */
+}
+
+
+/* From Uiverse.io by menezes11 */ 
+button {
+ position: relative;
+ padding: 1em 1.8em;
+ outline: none;
+ border: 1px solid #303030;
+ background: #f1f1f1;
+ color: #f871c0;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ font-size: 15px;
+ overflow: hidden;
+ transition: 0.2s;
+ border-radius: 20px;
+ cursor: pointer;
+ font-weight: bold;
+}
+
+button:hover {
+ box-shadow: 0 0 10px #9e67b8, 0 0 25px #b84283, 0 0 50px #c05fa8;
+ transition-delay: 0.6s;
+}
+
+button span {
+ position: absolute;
+}
+
+button span:nth-child(1) {
+ top: 0;
+ left: -100%;
+ width: 100%;
+ height: 2px;
+ background: linear-gradient(90deg, transparent, #ae00ff);
+}
+
+button:hover span:nth-child(1) {
+ left: 100%;
+ transition: 0.7s;
+}
+
+button span:nth-child(3) {
+ bottom: 0;
+ right: -100%;
+ width: 100%;
+ height: 2px;
+ background: linear-gradient(90deg, transparent, #001eff);
+}
+
+button:hover span:nth-child(3) {
+ right: 100%;
+ transition: 0.7s;
+ transition-delay: 0.35s;
+}
+
+button span:nth-child(2) {
+ top: -100%;
+ right: 0;
+ width: 2px;
+ height: 100%;
+ background: linear-gradient(180deg, transparent, #ae00ff);
+}
+
+button:hover span:nth-child(2) {
+ top: 100%;
+ transition: 0.7s;
+ transition-delay: 0.17s;
+}
+
+button span:nth-child(4) {
+ bottom: -100%;
+ left: 0;
+ width: 2px;
+ height: 100%;
+ background: linear-gradient(360deg, transparent, #001eff);
+}
+
+button:hover span:nth-child(4) {
+ bottom: 100%;
+ transition: 0.7s;
+ transition-delay: 0.52s;
+}
+
+
+
+button:active span:nth-child(1) 
+span:nth-child(2) 
+span:nth-child(2) 
+span:nth-child(2) {
+ transition: none;
+ transition-delay: none;
+}
