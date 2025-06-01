@@ -52,7 +52,7 @@ export default function GallerySection() {
 	const [artworks, setArtworks] = useState<typeof allArtworks>([])
 
 	useEffect(() => {
-		setArtworks(getRandomArtworks(allArtworks, 5))
+		setArtworks(getRandomArtworks(allArtworks, 7))
 	}, [])
 
 	return (

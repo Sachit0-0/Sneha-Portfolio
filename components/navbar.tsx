@@ -95,7 +95,7 @@ export default function Navbar() {
     <motion.header
       className={`fixed top-0 w-full z-40 transition-all duration-500 ${
         scrolled || !isHomePage
-          ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+          ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md "
           : "bg-transparent"
       }`}
       initial={{ y: -100 }}

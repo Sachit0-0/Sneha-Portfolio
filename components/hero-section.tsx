@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import bg from "../public/1.jpg"
 
 
@@ -87,14 +88,16 @@ export default function ArtistBanner() {
                 Creating bold, expressive works that challenge perception and evoke emotion
               </motion.p>
 
-              <motion.button
-                variants={textItem}
-                className="px-6 py-2 sm:px-8 sm:py-3 bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors text-sm sm:text-base"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Explore Gallery
-              </motion.button>
+              <Link href="/gallery" passHref>
+                <motion.button
+                  variants={textItem}
+                  className="px-6 py-2 sm:px-8 sm:py-3 bg-rose-500 text-white rounded-md hover:bg-rose-600 transition-colors text-sm sm:text-base"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Explore Gallery
+                </motion.button>
+              </Link>
             </motion.div>
           </div>
         </div>

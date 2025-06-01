@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion"
 import { useTheme } from "next-themes"
 
 export default function ColorfulCursor() {
+  const [mounted, setMounted] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [cursorColor, setCursorColor] = useState("#FF5757")
@@ -21,7 +22,11 @@ export default function ColorfulCursor() {
   const colors = ["#FF5757", "#FF8C00", "#FFD700", "#32CD32", "#00BFFF", "#8A2BE2", "#FF1493"]
 
   useEffect(() => {
-    if (window.innerWidth < 768) return
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted || window.innerWidth < 768) return
 
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX - 16)
@@ -32,8 +37,6 @@ export default function ColorfulCursor() {
     const handleMouseEnter = (e: Event) => {
       const target = e.currentTarget as HTMLElement
       setIsHovering(true)
-
-      // Different cursor styles for different elements
       if (target.matches('button, [role="button"]')) {
         setCursorVariant("button")
       } else if (target.matches("a")) {
@@ -43,7 +46,6 @@ export default function ColorfulCursor() {
       } else {
         setCursorVariant("text")
       }
-
       target.classList.add("hovered-by-cursor")
     }
 
@@ -77,15 +79,14 @@ export default function ColorfulCursor() {
       window.removeEventListener("mousemove", moveCursor)
       window.removeEventListener("mouseenter", () => setIsVisible(true))
       window.removeEventListener("mouseleave", () => setIsVisible(false))
-
       interactiveElements.forEach((el) => {
         el.removeEventListener("mouseenter", handleMouseEnter)
         el.removeEventListener("mouseleave", handleMouseLeave)
       })
     }
-  }, [cursorX, cursorY, colors])
+  }, [mounted, cursorX, cursorY, colors])
 
-  if (typeof window !== "undefined" && window.innerWidth < 768) {
+  if (!mounted || typeof window === "undefined" || window.innerWidth < 768) {
     return null
   }
 
