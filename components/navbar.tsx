@@ -76,9 +76,7 @@ export default function Navbar() {
   }
 
   const currentNavItems = navItems.map((item) =>
-    !isHomePage && item.href.startsWith("#")
-      ? { ...item, href: `/#${item.href.replace("#", "")}` }
-      : item
+    !isHomePage && item.href.startsWith("#") ? { ...item, href: `/#${item.href.replace("#", "")}` } : item,
   )
 
   const navItemVariants = {
@@ -94,30 +92,22 @@ export default function Navbar() {
   return (
     <motion.header
       className={`fixed top-0 w-full z-40 transition-all duration-500 ${
-        scrolled || !isHomePage
-          ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md "
-          : "bg-transparent"
+        scrolled || !isHomePage ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md " : "bg-transparent"
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
     >
-  <div className="container flex h-20 items-center justify-between">
-  <Link href="/" className="font-serif text-2xl font-light">
-    <motion.span
-      className="text-red-400 dark:text-white"
-      whileHover={{ scale: 1.05 }}
-      transition={{ type: "spring", stiffness: 400, damping: 10 }}
-    >
-      <Image
-        src={logo}
-        alt="Sneha"
-        width={110}
-        height={40}
-        className="object-contain"
-      />
-    </motion.span>
-  </Link>
+      <div className="container flex h-20 items-center justify-between">
+        <Link href="/" className="font-serif text-2xl font-light">
+          <motion.span
+            className="text-red-400 dark:text-white"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Image src={logo || "/placeholder.svg"} alt="Sneha" width={110} height={40} className="object-contain" />
+          </motion.span>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
@@ -131,27 +121,27 @@ export default function Navbar() {
             >
               <Link
                 href={item.href}
-                className={`relative group text-red-400 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors font-light text-lg ${
-                  isActive(item.href) ? "font-semibold text-gray-900 dark:text-white" : ""
-                }`}
+                className={`relative group transition-all duration-500 font-light ${
+                  scrolled || !isHomePage
+                    ? "text-lg text-red-400 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    : "text-2xl text-white hover:text-gray-200"
+                } ${isActive(item.href) ? "font-semibold text-gray-900 dark:text-white" : ""}`}
                 aria-current={isActive(item.href) ? "page" : undefined}
               >
                 {item.name}
                 <span
                   className={`block absolute -bottom-1 left-0 h-[3px] rounded-full bg-red-400 transition-all duration-500 ease-in-out
-                    ${isActive(item.href)
-                      ? "w-full scale-x-100"
-                      : "w-0 scale-x-0 group-hover:scale-x-100 group-hover:w-full"}
+                    ${
+                      isActive(item.href)
+                        ? "w-full scale-x-100"
+                        : "w-0 scale-x-0 group-hover:scale-x-100 group-hover:w-full"
+                    }
                   `}
                   style={{
                     transitionProperty: "width,transform",
                     transformOrigin: "left",
-                    boxShadow: isActive(item.href)
-                      ? "0 1px 0 0 #f87171, 0 2px 8px 0 #f8717155"
-                      : undefined,
-                    filter: isActive(item.href)
-                      ? "blur(0.2px)"
-                      : undefined,
+                    boxShadow: isActive(item.href) ? "0 1px 0 0 #f87171, 0 2px 8px 0 #f8717155" : undefined,
+                    filter: isActive(item.href) ? "blur(0.2px)" : undefined,
                   }}
                 />
               </Link>
@@ -166,15 +156,6 @@ export default function Navbar() {
             <ModeToggle />
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 1.1 }}
-          >
-            <Button className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full px-6 font-light">
-              Let's Work
-            </Button>
-          </motion.div>
         </nav>
 
         {/* Mobile menu toggle */}
@@ -196,13 +177,14 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-white dark:bg-gray-950 z-50 md:hidden"
+            className="fixed inset-0 bg-white/100 dark:bg-gray-950/100 backdrop-blur-sm z-50 md:hidden"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex justify-end p-6">
+            <div className="absolute inset-0 bg-white dark:bg-gray-950" />
+            <div className="flex justify-end p-6 relative z-10">
               <Button
                 variant="ghost"
                 size="icon"
@@ -213,7 +195,7 @@ export default function Navbar() {
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            <nav className="flex flex-col items-center justify-center h-[calc(100vh-100px)] gap-8">
+            <nav className="flex flex-col items-center justify-center h-[calc(100vh-100px)] gap-8 relative z-10">
               {currentNavItems.map((item, index) => (
                 <motion.div
                   key={item.name}

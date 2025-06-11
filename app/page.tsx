@@ -3,12 +3,11 @@ import GallerySection from "@/components/gallery-section"
 import ArtistSection from "@/components/artist-section"
 import ProcessSection from "@/components/process-section"
 import ContactSection from "@/components/contact-section"
-import ColorfulCursor from "@/components/colorful-cursor"
+
 
 export default function Home() {
   return (
     <>
-      <ColorfulCursor />
       <main className="overflow-hidden">
         <section id="hero">
           <HeroSection />

@@ -92,30 +92,28 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          <div>
-            <h3 className="theme-text-primary font-medium mb-4">Newsletter</h3>
-            <p className="theme-text-secondary mb-4">
-              Subscribe to receive updates on new artwork, exhibitions, and events.
-            </p>
-            <form className="flex">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex h-10 w-full rounded-l-md border border-white/20 bg-white/5 px-3 py-2 text-sm theme-text-primary placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-              />
-              <button
-                type="submit"
-                className="rounded-r-md bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-2 text-sm font-medium text-white hover:from-pink-600 hover:to-purple-700"
-              >
-                Join
-              </button>
-            </form>
-          </div>
+<div className="wheel-and-hamster">
+	<div className="wheel"></div>
+	<div className="hamster">
+		<div className="hamster__body">
+			<div className="hamster__head">
+				<div className="hamster__ear"></div>
+				<div className="hamster__eye"></div>
+				<div className="hamster__nose"></div>
+			</div>
+			<div className="hamster__limb hamster__limb--fr"></div>
+			<div className="hamster__limb hamster__limb--fl"></div>
+			<div className="hamster__limb hamster__limb--br"></div>
+			<div className="hamster__limb hamster__limb--bl"></div>
+			<div className="hamster__tail"></div>
+		</div>
+	</div>
+	<div className="spoke"></div>
+</div>
         </div>
 
         <div className="border-t border-gray-200 dark:border-white/10 pt-8 text-center theme-text-muted text-sm">
-          <p>&copy; {new Date().getFullYear()} ARTFOLIO. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()}SNEHA ARTFOLIO. All rights reserved.</p>
         </div>
       </div>
     </footer>

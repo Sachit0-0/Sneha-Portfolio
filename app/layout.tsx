@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-import Cursor from "@/components/cursor"
-import ColorfulCursor from "@/components/colorful-cursor"
+
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,7 +32,6 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", montserrat.variable, playfair.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-         <ColorfulCursor />
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
             <div className="flex-1">{children}</div>
