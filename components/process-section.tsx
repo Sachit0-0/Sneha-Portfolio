@@ -38,7 +38,7 @@ export default function ProcessSection() {
   const isInView = useInView(containerRef, { once: true, margin: "-100px" })
 
   return (
-    <section id="process" ref={containerRef} className="py-24 md:py-32 theme-bg-secondary relative overflow-hidden">
+    <section id="process" ref={containerRef} className="py-24 md:py-32 theme-bg-primary relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0">
         <motion.div

@@ -32,7 +32,7 @@ export default function ContactSection() {
   }
 
   return (
-    <section id="contact" ref={containerRef} className="py-24 md:py-32 theme-bg-secondary relative overflow-hidden">
+    <section id="contact" ref={containerRef} className="py-24 md:py-32 theme-bg-primary relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0">
         <motion.div

@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-import logo from "@/public/logo.png"
+// import logo from "@/public/logo.png"
 import Image from "next/image"
 
 const navItems = [
@@ -105,7 +105,7 @@ export default function Navbar() {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Image src={logo || "/placeholder.svg"} alt="Sneha" width={110} height={40} className="object-contain" />
+            <Image src="/logo.png" alt="Sneha" width={110} height={40} className="object-contain" />
           </motion.span>
         </Link>
 

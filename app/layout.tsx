@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
-
+import CatProgressBar from "@/components/cat-progress-bar"
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -29,11 +29,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-        <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", montserrat.variable, playfair.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      
           <div className="relative flex min-h-screen flex-col">
             <Navbar />
+                <CatProgressBar />
             <div className="flex-1">{children}</div>
             <Footer />
           </div>
