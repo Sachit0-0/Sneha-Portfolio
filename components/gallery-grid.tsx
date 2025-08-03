@@ -1,9 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import one from "../public/Art/1000013360.jpg"
 import two from "../public/Art/20240822_080116.jpg"
@@ -19,7 +18,7 @@ import eleven from "../public/Art/RUID52c7e29134504ea5a0353c78824c5658.jpg"
 import twelve from "../public/Art/RUID7f5cbf30e4054ab4a287bc654b4010fa.jpg"
 import thirteen from "../public/Art/asd.jpg"
 
-const artworks = [
+const artworksData = [
   { id: 1, image: one },
   { id: 2, image: two },
   { id: 3, image: three },
@@ -37,6 +36,7 @@ const artworks = [
 
 export default function GalleryGrid() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
+  const artworks = useMemo(() => artworksData, [])
 
   const nextImage = () => {
     if (selectedIndex !== null) {
@@ -88,14 +88,14 @@ export default function GalleryGrid() {
                   src={artwork.image || "/placeholder.svg"}
                   alt={`Artwork ${artwork.id}`}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  sizes="(max-width: 768px) 100vw, 25vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                   placeholder="blur"
+                  loading="lazy"
                 />
               </div>
               <div className="absolute bottom-4 left-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg px-3 py-2">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">Artwork {artwork.id}</p>
-                </div>
+             
               </div>
             </motion.div>
           ))}
@@ -153,19 +153,19 @@ export default function GalleryGrid() {
             {/* Main Image */}
             <motion.div
               key={selectedIndex}
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
               className="flex items-center justify-center w-full h-full"
             >
               <Image
                 src={artworks[selectedIndex].image || "/placeholder.svg"}
                 alt={`Artwork ${artworks[selectedIndex].id}`}
                 className="object-contain rounded-lg shadow-2xl max-h-[90vh] max-w-[90vw] w-auto h-auto"
-                width={1200}
-                height={1600}
-                priority
+                width={900}
+                height={1200}
+                loading="eager"
               />
             </motion.div>
 
@@ -176,7 +176,7 @@ export default function GalleryGrid() {
                   <button
                     key={artwork.id}
                     onClick={() => setSelectedIndex(index)}
-                    className={`relative w-12 h-12 rounded-lg overflow-hidden transition-all duration-200 ${
+                    className={`relative w-10 h-10 rounded-lg overflow-hidden transition-all duration-200 ${
                       index === selectedIndex ? "ring-2 ring-white scale-110" : "opacity-60 hover:opacity-100"
                     }`}
                     aria-label={`View artwork ${artwork.id}`}
@@ -185,7 +185,9 @@ export default function GalleryGrid() {
                       src={artwork.image || "/placeholder.svg"}
                       alt={`Thumbnail ${artwork.id}`}
                       fill
+                      sizes="40px"
                       className="object-cover"
+                      loading="lazy"
                     />
                   </button>
                 ))}
