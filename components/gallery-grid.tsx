@@ -1,10 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
-import { motion } from "framer-motion"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Lens } from "./magicui/lens"
+import { motion, AnimatePresence } from "framer-motion"
+import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import one from "../public/Art/1000013360.jpg"
 import two from "../public/Art/20240822_080116.jpg"
 import three from "../public/Art/20240822_080254.jpg"
@@ -17,101 +17,183 @@ import nine from "../public/Art/IMG_20210213_171555_240.jpg"
 import ten from "../public/Art/IMG_20210420_133301_982.jpg"
 import eleven from "../public/Art/RUID52c7e29134504ea5a0353c78824c5658.jpg"
 import twelve from "../public/Art/RUID7f5cbf30e4054ab4a287bc654b4010fa.jpg"
-import therteen from "../public/Art/asd.jpg"
+import thirteen from "../public/Art/asd.jpg"
 
-// Sample artwork data
 const artworks = [
-  { id: 1, title: "Ethereal Dreams", category: "Paintingss", year: 2023, image: one, description: "Oil on canvas exploring themes of consciousness and dreams." },
-  { id: 2, title: "Urban Fragments", category: "Digital", year: 2022, image: two, description: "Digital collage representing urban life and its complexities." },
-  { id: 3, title: "Harmony in Bronze", category: "Sculptures", year: 2023, image: three, description: "Bronze sculpture exploring balance and harmony in form." },
-  { id: 4, title: "Reflections", category: "Paintings", year: 2021, image: four, description: "Acrylic on canvas depicting reflections on water surfaces." },
-  { id: 5, title: "Digital Dystopia", category: "Digital", year: 2022, image: five, description: "Digital art exploring themes of technology and society." },
-  { id: 6, title: "Spatial Concept", category: "Installations", year: 2023, image: six, description: "Mixed media installation examining space and perception." },
-  { id: 7, title: "Chromatic Fusion", category: "Paintings", year: 2021, image: seven, description: "Oil on canvas exploring color theory and emotional response." },
-  { id: 8, title: "Geometric Harmony", category: "Sculptures", year: 2022, image: eight, description: "Marble sculpture focusing on geometric patterns and forms." },
-  { id: 9, title: "Virtual Landscapes", category: "Digital", year: 2023, image: nine, description: "Digital artwork creating imaginary landscapes and environments." },
-  { id: 10, title: "Temporal Shift", category: "Installations", year: 2021, image: ten, description: "Interactive installation exploring concepts of time and change." },
-  { id: 11, title: "Abstract Emotions", category: "Paintings", year: 2022, image: eleven, description: "Abstract expressionist painting capturing raw emotional states." },
-  { id: 12, title: "Digital Metamorphosis", category: "Digital", year: 2023, image: twelve, description: "Digital artwork exploring transformation and evolution." },
-  { id: 13, title: "Untitled", category: "Mixed Media", year: 2024, image: therteen, description: "A mysterious piece with an experimental approach." },
+  { id: 1, image: one },
+  { id: 2, image: two },
+  { id: 3, image: three },
+  { id: 4, image: four },
+  { id: 5, image: five },
+  { id: 6, image: six },
+  { id: 7, image: seven },
+  { id: 8, image: eight },
+  { id: 9, image: nine },
+  { id: 10, image: ten },
+  { id: 11, image: eleven },
+  { id: 12, image: twelve },
+  { id: 13, image: thirteen },
 ]
 
-interface GalleryGridProps {
-  category?: string
-  limit?: number
-}
+export default function GalleryGrid() {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
-export default function GalleryGrid({ category = "All", limit }: GalleryGridProps) {
-  const [selectedArtwork, setSelectedArtwork] = useState<(typeof artworks)[0] | null>(null)
+  const nextImage = () => {
+    if (selectedIndex !== null) {
+      setSelectedIndex((selectedIndex + 1) % artworks.length)
+    }
+  }
 
-  const filteredArtworks = category === "All" ? artworks : artworks.filter((artwork) => artwork.category === category)
-  const displayedArtworks = limit ? filteredArtworks.slice(0, limit) : filteredArtworks
+  const prevImage = () => {
+    if (selectedIndex !== null) {
+      setSelectedIndex(selectedIndex === 0 ? artworks.length - 1 : selectedIndex - 1)
+    }
+  }
+
+  // Close modal on Escape key
+  useEffect(() => {
+    if (selectedIndex === null) return
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") nextImage()
+      if (e.key === "ArrowLeft") prevImage()
+      if (e.key === "Escape") setSelectedIndex(null)
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [selectedIndex])
 
   return (
     <>
-      {/* Masonry-style gallery */}
-      <motion.div
-        className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4 px-2 md:px-0"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5, staggerChildren: 0.1 }}
-      >
-        {displayedArtworks.map((artwork, index) => (
-          <motion.div
-            key={artwork.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.05 }}
-            className="mb-4 break-inside-avoid cursor-pointer rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white dark:bg-gray-900"
-            onClick={() => setSelectedArtwork(artwork)}
-          >
-            <Lens zoomFactor={1.4}>
-              <Image
-                src={artwork.image}
-                alt={artwork.title}
-                className="w-full h-auto object-cover transition-transform duration-500 hover:scale-105"
-                placeholder="blur"
-              />
-            </Lens>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      <Dialog open={!!selectedArtwork} onOpenChange={() => setSelectedArtwork(null)}>
-        <DialogContent className="max-w-6xl p-0 overflow-hidden">
-          {selectedArtwork && (
-            <>
-              <DialogHeader className="px-8 pt-8">
-                <DialogTitle className="text-3xl">{selectedArtwork.title}</DialogTitle>
-              </DialogHeader>
-              <div className="grid md:grid-cols-2 gap-0">
-                <div className="relative aspect-[4/5] bg-gray-100 dark:bg-gray-800">
-                  <Image
-                    src={selectedArtwork.image}
-                    alt={selectedArtwork.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-8 flex flex-col">
-                  <p className="text-muted-foreground mb-4 text-lg">
-                    {selectedArtwork.category}, {selectedArtwork.year}
-                  </p>
-                  <p className="mb-6 text-base">{selectedArtwork.description}</p>
-                  <div className="mt-auto">
-                    <p className="text-sm text-muted-foreground">
-                      Interested in this piece?{" "}
-                      <a href="/contact" className="text-primary hover:underline">
-                        Contact for pricing
-                      </a>
-                    </p>
-                  </div>
+      {/* Modern Grid Gallery */}
+      <div className="min-h-screen p-4 md:p-8">
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          {artworks.map((artwork, index) => (
+            <motion.div
+              key={artwork.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -8 }}
+              className="group relative aspect-[3/4] cursor-pointer"
+              onClick={() => setSelectedIndex(index)}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-2xl" />
+              <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-300">
+                <Image
+                  src={artwork.image || "/placeholder.svg"}
+                  alt={`Artwork ${artwork.id}`}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  placeholder="blur"
+                />
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/90 dark:bg-black/90 backdrop-blur-sm rounded-lg px-3 py-2">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">Artwork {artwork.id}</p>
                 </div>
               </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Lowkey Coming Soon Section */}
+      <div className="flex justify-center items-center mt-8 mb-16">
+        <span className="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-sm shadow-sm">
+          More coming soon...
+        </span>
+      </div>
+
+      {/* Custom Fullscreen Modal */}
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
+            style={{ width: "100vw", height: "100vh" }}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setSelectedIndex(null)}
+              className="absolute top-6 right-6 z-30 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white backdrop-blur-sm"
+              aria-label="Close fullscreen preview"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Image Counter */}
+            <div className="absolute top-6 left-6 z-30 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm text-white text-sm">
+              {selectedIndex + 1} / {artworks.length}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevImage}
+              className="absolute left-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white backdrop-blur-sm"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={nextImage}
+              className="absolute right-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white backdrop-blur-sm"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Main Image */}
+            <motion.div
+              key={selectedIndex}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-center justify-center w-full h-full"
+            >
+              <Image
+                src={artworks[selectedIndex].image || "/placeholder.svg"}
+                alt={`Artwork ${artworks[selectedIndex].id}`}
+                className="object-contain rounded-lg shadow-2xl max-h-[90vh] max-w-[90vw] w-auto h-auto"
+                width={1200}
+                height={1600}
+                priority
+              />
+            </motion.div>
+
+            {/* Thumbnail Strip */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
+              <div className="flex gap-2 p-3 bg-black/50 backdrop-blur-sm rounded-full max-w-[80vw] overflow-x-auto">
+                {artworks.map((artwork, index) => (
+                  <button
+                    key={artwork.id}
+                    onClick={() => setSelectedIndex(index)}
+                    className={`relative w-12 h-12 rounded-lg overflow-hidden transition-all duration-200 ${
+                      index === selectedIndex ? "ring-2 ring-white scale-110" : "opacity-60 hover:opacity-100"
+                    }`}
+                    aria-label={`View artwork ${artwork.id}`}
+                  >
+                    <Image
+                      src={artwork.image || "/placeholder.svg"}
+                      alt={`Thumbnail ${artwork.id}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

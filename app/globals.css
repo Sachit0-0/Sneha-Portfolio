@@ -90,11 +90,6 @@
 
 
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
 /* Custom scrollbar - theme aware */
 ::-webkit-scrollbar {
   width: 8px;

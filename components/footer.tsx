@@ -3,9 +3,9 @@ import { Instagram, Twitter, Facebook, Youtube } from "lucide-react"
 
 export default function Footer() {
   return (
-    <footer className="theme-bg-primary py-16 relative overflow-hidden border-t border-gray-200 dark:border-white/10">
+    <footer className="py-16 relative overflow-hidden border-t border-gray-200 dark:border-white/10">
       {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-purple-900/10 dark:from-purple-900/20 to-transparent" />
+    
 
       <div className="container relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-center mb-12">

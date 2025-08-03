@@ -1,63 +1,195 @@
 "use client"
 
-import { useRef } from "react"
-import { motion, useInView } from "framer-motion"
-import Image from "next/image"
-import { Palette, Lightbulb, Layers, Sparkles } from "lucide-react"
-import ProcessStep from "@/components/process-step"
+import type React from "react"
+import { useRef, useState } from "react"
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion"
+import { Palette, Lightbulb, Layers, Sparkles, Heart, Coffee } from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 
 const processSteps = [
   {
     icon: Lightbulb,
     title: "Inspiration",
-    description: "Every piece begins with a spark of inspiration, whether from nature, emotions, or experiences.",
-    color: "#FF5757", // Red
+    description:
+      "It all starts with a spark—sometimes a walk in nature, a fleeting emotion, or a memory. I let these moments guide my imagination and fuel my creativity.",
+    color: "#FF6B6B",
+    bgGradient: "from-red-400/20 to-orange-400/20",
+    details:
+      "I find inspiration everywhere: in morning light, old photographs, conversations, and quiet moments of reflection.",
   },
   {
     icon: Palette,
     title: "Exploration",
-    description: "Experimenting with colors, textures, and techniques to find the perfect expression.",
-    color: "#00BFFF", // Deep Sky Blue
+    description:
+      "I play with colors, textures, and techniques, letting curiosity lead the way. This is where ideas begin to take shape and possibilities unfold.",
+    color: "#4ECDC4",
+    bgGradient: "from-teal-400/20 to-cyan-400/20",
+    details:
+      "Experimentation is key—mixing mediums, trying new approaches, and embracing the unexpected discoveries along the way.",
   },
   {
     icon: Layers,
     title: "Creation",
-    description: "Building layers of depth and meaning through careful application of artistic elements.",
-    color: "#FFD700", // Yellow
+    description:
+      "Layer by layer, I build the piece, adding depth and meaning. Each stroke and detail is a step closer to the story I want to tell.",
+    color: "#FFE66D",
+    bgGradient: "from-yellow-400/20 to-amber-400/20",
+    details:
+      "This is where patience meets passion—carefully building up the artwork while staying open to how it wants to evolve.",
   },
   {
     icon: Sparkles,
     title: "Refinement",
-    description: "Polishing and perfecting the final details to bring the vision to life.",
-    color: "#8A2BE2", // Blue Violet
+    description:
+      "The final touches matter most. I spend time perfecting details, adjusting balance, and making sure the artwork feels complete before sharing it.",
+    color: "#B794F6",
+    bgGradient: "from-purple-400/20 to-pink-400/20",
+    details:
+      "These finishing moments are magical—when everything comes together and the piece finally says what I intended it to say.",
   },
 ]
 
-export default function ProcessSection() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" })
+interface ProcessStepProps {
+  step: {
+    icon: LucideIcon
+    title: string
+    description: string
+    color: string
+    bgGradient: string
+    details: string
+  }
+  index: number
+  isHovered: boolean
+}
+
+function ProcessStep({ step, index, isHovered }: ProcessStepProps) {
+  const Icon = step.icon
 
   return (
-    <section id="process" ref={containerRef} className="py-24 md:py-32 theme-bg-primary relative overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0">
+    <motion.div
+      className="relative p-8 rounded-3xl bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-white/20 dark:border-slate-700/20 shadow-xl hover:shadow-2xl transition-all duration-500 group overflow-hidden"
+      whileHover={{ y: -5 }}
+      layout
+    >
+      {/* Background gradient */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${step.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+      />
+
+      {/* Step number */}
+      <motion.div
+        className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-gradient-to-br from-white to-slate-100 dark:from-slate-700 dark:to-slate-600 shadow-lg flex items-center justify-center border-4 border-white dark:border-slate-800"
+        animate={{ rotate: isHovered ? 360 : 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <span className="text-2xl font-bold text-slate-700 dark:text-white">{index}</span>
+      </motion.div>
+
+      {/* Icon */}
+      <motion.div
+        className="relative z-10 mb-6"
+        animate={{
+          scale: isHovered ? 1.1 : 1,
+          rotate: isHovered ? 5 : 0,
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+          style={{ backgroundColor: step.color }}
+        >
+          <Icon className="w-8 h-8 text-white" />
+        </div>
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <h3 className="text-2xl font-bold text-slate-800 dark:text-white mb-4 group-hover:text-slate-900 dark:group-hover:text-white transition-colors">
+          {step.title}
+        </h3>
+
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-4 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors">
+          {step.description}
+        </p>
+
+        {/* Details that appear on hover */}
         <motion.div
-          className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-b from-pink-500/10 to-transparent rounded-full blur-3xl"
+          initial={{ opacity: 0, height: 0 }}
           animate={{
-            y: [0, 30, 0],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: isHovered ? 1 : 0,
+            height: isHovered ? "auto" : 0,
           }}
-          transition={{
-            duration: 15,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
+          transition={{ duration: 0.3 }}
+          className="overflow-hidden"
+        >
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-600">
+            <p className="text-sm text-slate-500 dark:text-slate-400 italic">{step.details}</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Decorative elements */}
+      <motion.div
+        className="absolute bottom-4 right-4 w-2 h-2 rounded-full opacity-20"
+        style={{ backgroundColor: step.color }}
+        animate={{
+          scale: isHovered ? [1, 1.5, 1] : 1,
+        }}
+        transition={{
+          duration: 2,
+          repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+        }}
+      />
+      <motion.div
+        className="absolute bottom-6 right-8 w-1 h-1 rounded-full opacity-30"
+        style={{ backgroundColor: step.color }}
+        animate={{
+          scale: isHovered ? [1, 2, 1] : 1,
+        }}
+        transition={{
+          duration: 2,
+          delay: 0.5,
+          repeat: isHovered ? Number.POSITIVE_INFINITY : 0,
+        }}
+      />
+    </motion.div>
+  )
+}
+
+export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(containerRef, { once: true, margin: "-50px" })
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
+
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 })
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 })
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (rect) {
+      mouseX.set((e.clientX - rect.left - rect.width / 2) / 20)
+      mouseY.set((e.clientY - rect.top - rect.height / 2) / 20)
+    }
+  }
+
+  return (
+    <main
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      className="py-20 relative overflow-hidden"
+    >
+      {/* Dynamic background elements */}
+      <div className="absolute  inset-0 overflow-hidden">
+ 
+      
         <motion.div
-          className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-t from-purple-500/10 to-transparent rounded-full blur-3xl"
+          className="absolute bottom-0  rounded-full "
           animate={{
-            y: [0, -30, 0],
-            opacity: [0.3, 0.5, 0.3],
+            x: [50, -50, 50],
+            y: [20, -20, 20],
+            scale: [1, 1.1, 1],
           }}
           transition={{
             duration: 18,
@@ -67,88 +199,56 @@ export default function ProcessSection() {
         />
       </div>
 
-      <div className="container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-6xl font-serif font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent mb-6">
-              My Creative Process
-            </h2>
-            <p className="text-xl theme-text-secondary mb-12">
-              Art is a journey of discovery. Here's how I bring imagination to life through a thoughtful creative
-              process.
-            </p>
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header */}
+        
+        <motion.div
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 50 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+          transition={{ duration: 0.8 }}
+        >
+     
 
-            <div className="space-y-8">
-              {processSteps.map((step, index) => (
-                <motion.div
-                  key={step.title}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                  transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
-                >
-                  <ProcessStep step={step} index={index + 1} />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 text-shadow-md">
+            <span className="bg-clip-text ">
+              How I Create
+            </span>
+          </h1>
 
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="relative h-[600px] w-full">
-              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-3xl transform rotate-3" />
-              <div className="absolute top-5 left-5 w-full h-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-3xl transform -rotate-3" />
+          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            Every artwork I create is a little adventure. I love exploring new ideas and letting my feelings guide my
+            hands. Here's how I turn inspiration into something you can see and feel.
+          </p>
+        </motion.div>
 
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-4/5 h-4/5 overflow-hidden rounded-2xl">
-                  <Image
-                    src="https://picsum.photos/600/800?grayscale&random=7"
-                    alt="Creative process"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Floating elements */}
-              <motion.div
-                className="absolute -top-10 -right-10 w-32 h-32 bg-gradient-to-br from-pink-500/30 to-purple-500/30 rounded-full blur-xl"
-                animate={{
-                  y: [0, -20, 0],
-                  rotate: [0, 180, 360],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 10,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-              />
-
-              <motion.div
-                className="absolute -bottom-10 -left-10 w-40 h-40 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 rounded-full blur-xl"
-                animate={{
-                  y: [0, 20, 0],
-                  rotate: [360, 180, 0],
-                  scale: [1, 0.9, 1],
-                }}
-                transition={{
-                  duration: 12,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeInOut",
-                }}
-              />
-            </div>
-          </motion.div>
-        </div>
+        {/* Process Steps */}
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20"
+          animate={{ y: [0, 5, 0] }}
+          transition={{
+            duration: 5,
+            repeat: Number.POSITIVE_INFINITY,
+            ease: "easeInOut",
+          }}
+        >
+          {processSteps.map((step, index) => (
+            <motion.div
+              key={step.title}
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              onHoverStart={() => setHoveredStep(index)}
+              onHoverEnd={() => setHoveredStep(null)}
+              className="relative"
+            >
+              <ProcessStep step={step} index={index + 1} isHovered={hoveredStep === index} />
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
-    </section>
+
+     
+    </main>
   )
 }

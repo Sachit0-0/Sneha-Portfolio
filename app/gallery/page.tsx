@@ -21,25 +21,8 @@ export default function GalleryPage() {
         Gallery
       </motion.h1>
 
-      <motion.div
-        className="flex flex-wrap justify-center gap-2 mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        {categories.map((category) => (
-          <Button
-            key={category}
-            variant={activeCategory === category ? "default" : "outline"}
-            onClick={() => setActiveCategory(category)}
-            className="rounded-full"
-          >
-            {category}
-          </Button>
-        ))}
-      </motion.div>
 
-      <GalleryGrid category={activeCategory} />
+      <GalleryGrid />
     </div>
   )
 }

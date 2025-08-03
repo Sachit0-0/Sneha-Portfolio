@@ -1,8 +1,8 @@
 import HeroSection from "@/components/hero-section"
-import GallerySection from "@/components/gallery-section"
 import ArtistSection from "@/components/artist-section"
 import ProcessSection from "@/components/process-section"
 import ContactSection from "@/components/contact-section"
+import AnimatedGallery from "@/components/animatedGallery"
 
 export default function Home() {
   return (
@@ -19,12 +19,12 @@ export default function Home() {
             <ArtistSection />
           </section>
           <section id="gallery" className="min-h-screen bg-gray-50 dark:bg-gray-900">
-            <GallerySection />
+            <AnimatedGallery/>
           </section>
-          <section id="process" className="min-h-screen bg-white dark:bg-gray-950">
+          <section id="process" className=" bg-gray-50 dark:bg-gray-900">
             <ProcessSection />
           </section>
-          <section id="contact" className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <section id="contact" className="bg-gray-50 dark:bg-gray-900">
             <ContactSection />
           </section>
         </div>
