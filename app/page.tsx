@@ -9,22 +9,22 @@ export default function Home() {
     <>
       <main className="relative">
         {/* Fixed Hero Section */}
-        <section id="hero" className="sticky top-0 h-screen z-10">
+        <section id="hero" className="hero-section bg-gray-50 dark:bg-[#11151c]">
           <HeroSection />
         </section>
 
         {/* Scrolling Content Sections */}
         <div className="relative z-20">
-          <section id="artist" className="min-h-screen bg-white dark:bg-gray-950">
+          <section id="artist" className="min-h-screen bg-gray-50 dark:bg-[#11151c]">
             <ArtistSection />
           </section>
-          <section id="gallery" className="min-h-screen bg-gray-50 dark:bg-gray-900">
+          <section id="gallery" className="min-h-screen bg-gray-50 dark:bg-[#11151c]">
             <AnimatedGallery/>
           </section>
-          <section id="process" className=" bg-gray-50 dark:bg-gray-900">
+          <section id="process" className=" bg-gray-50 dark:bg-[#11151c]">
             <ProcessSection />
           </section>
-          <section id="contact" className="bg-gray-50 dark:bg-gray-900">
+          <section id="contact" className="bg-gray-50 dark:bg-[#11151c]">
             <ContactSection />
           </section>
         </div>

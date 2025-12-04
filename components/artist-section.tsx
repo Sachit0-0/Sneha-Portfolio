@@ -35,13 +35,9 @@ export default function ArtistSection() {
 	return (
 		<section
 			id="artist"
-			className="py-20 md:py-32 bg-gray-50 dark:bg-gray-900 relative overflow-hidden min-h-screen"
+			className="py-20 md:py-32 relative overflow-hidden min-h-screen"
 			aria-labelledby="artist-heading"
 		>
-			{/* Enhanced background elements */}
-			<div className="absolute top-40 right-10 w-24 h-24 bg-gradient-to-br from-pink-500/10 to-purple-500/5 rounded-full blur-2xl" />
-			<div className="absolute bottom-40 left-10 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-cyan-500/5 rounded-full blur-2xl" />
-			<div className="absolute top-1/2 left-1/2 w-40 h-40 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
 
 			<div className="container relative z-10 px-4 sm:px-6 lg:px-8">
 				<motion.div
@@ -122,18 +118,7 @@ export default function ArtistSection() {
 									esneharaii@gmail.com
 								</div>
 							</div>
-							{/* Socials */}
-							<div className="flex flex-wrap justify-center gap-6 opacity-70">
-								<div className="h-6 flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
-									Instagram
-								</div>
-								<div className="h-6 flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
-									Email
-								</div>
-								<div className="h-6 flex items-center text-gray-400 dark:text-gray-500 font-medium text-sm">
-									Local Gallery
-								</div>
-							</div>
+
 							{/* View Portfolio Button */}
 							<div className="pt-8 flex justify-center">
 								<button>
@@ -194,31 +179,7 @@ export default function ArtistSection() {
 								))}
 							</div>
 						</div>
-						{/* Skills */}
-						<div>
-							<h3 className="text-xl font-serif font-medium text-gray-900 dark:text-white mb-6">
-								Skills
-							</h3>
-							<div className="flex flex-wrap gap-3">
-								{[
-									"Good Communication (English, Nepali, Hindi)",
-									"Creativity",
-									"Adapting Abilities",
-									"Artistic Techniques & Medias",
-									"Problem Solving",
-									"Teamwork & Collaboration",
-									"Business Management",
-									"Computer Skills",
-								].map((skill, idx) => (
-									<span
-										key={idx}
-										className="bg-pink-100 text-pink-700 dark:bg-pink-900 dark:text-pink-200 px-3 py-1 rounded-full text-xs font-medium"
-									>
-										{skill}
-									</span>
-								))}
-							</div>
-						</div>
+				
 						{/* Achievements */}
 						<div>
 							<h3 className="text-xl font-serif font-medium text-gray-900 dark:text-white mb-6">

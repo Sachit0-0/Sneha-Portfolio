@@ -7,9 +7,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ModeToggle } from "@/components/mode-toggle"
-// import logo from "@/public/logo.png"
 import Image from "next/image"
 
+
+const FONT_CLASS = "font-playfair-display" 
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Artist", href: "#artist" },
@@ -40,6 +41,7 @@ export default function Navbar() {
   // Scroll position and section highlight
   useEffect(() => {
     const handleScroll = () => {
+      // Set scrolled state based on position
       setScrolled(window.scrollY > 50)
 
       if (isHomePage) {
@@ -51,7 +53,8 @@ export default function Navbar() {
             const el = document.getElementById(id)
             if (!el) return
             const rect = el.getBoundingClientRect()
-            if (rect.top <= window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+            // Check if section is in the middle third of the viewport
+            if (rect.top <= window.innerHeight * 0.4 && rect.bottom > window.innerHeight * 0.4) {
               current = id
             }
           })
@@ -89,91 +92,139 @@ export default function Navbar() {
     animate: { opacity: 1, y: 0 },
   }
 
+  // Determine dynamic size classes
+  const logoSizeClass = scrolled || !isHomePage ? "w-36 h-32" : "w-44 h-44" 
+  const textSizeClass = scrolled || !isHomePage ? "text-xl font-light" : "text-2xl font-normal" 
+
+  const shouldShowToggle = scrolled || !isHomePage
+
   return (
     <motion.header
       className={`fixed top-0 w-full z-40 transition-all duration-500 ${
-        scrolled || !isHomePage ? "bg-white/90 dark:bg-gray-950/90 backdrop-blur-md " : "bg-transparent"
+        scrolled || !isHomePage ? "bg-gray-50 dark:bg-[#11151c] backdrop-blur-md " : "bg-transparent"
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
     >
-      <div className="container flex h-20 items-center justify-between">
-        <Link href="/" className="font-serif text-2xl font-light">
+
+      <div className="container mx-auto px-4 flex h-20 items-center justify-between ">
+        <Link href="/" className={`${FONT_CLASS} text-2xl font-light -ml-4`}> 
           <motion.span
-            className="text-red-400 dark:text-white"
+            className="text-red-400 dark:text-white transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Image src="/logo.png" alt="Sneha" width={110} height={40} className="object-contain" />
+            {/* DYNAMIC LOGO SIZE */}
+            <Image 
+              src="/logo.png" 
+              alt="Sneha" 
+              width={150} 
+              height={50} 
+              className={`object-contain transition-all duration-300 ${logoSizeClass}`} 
+            />
           </motion.span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* ➡️ FONT CHANGE: Applied custom font class to nav items */}
+        <nav className={`hidden md:flex items-center gap-10 ${FONT_CLASS}`}>
           {currentNavItems.map((item, index) => (
             <motion.div
               key={item.name}
               variants={navItemVariants}
               initial="initial"
               animate="animate"
-              transition={{ duration: 0.3, delay: 0.7 + index * 0.1 }}
+              transition={{ duration: 0.5, delay: 0.7 + index * 0.08, ease: "easeInOut" }}
             >
               <Link
                 href={item.href}
-                className={`relative group transition-all duration-500 font-light ${
+                className={`relative group transition-all duration-300 ${
                   scrolled || !isHomePage
-                    ? "text-lg text-red-400 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                    : "text-2xl text-white hover:text-gray-200"
-                } ${isActive(item.href) ? "font-semibold text-gray-900 dark:text-white" : ""}`}
+                    ? "text-black dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                    : "text-white hover:text-gray-200"
+                } ${
+                  // DYNAMIC TEXT SIZE
+                  textSizeClass
+                } ${
+                  isActive(item.href) ? " text-gray-900 dark:text-white" : ""
+                }`}
                 aria-current={isActive(item.href) ? "page" : undefined}
               >
                 {item.name}
-                <span
-                  className={`block absolute -bottom-1 left-0 h-[3px] rounded-full bg-red-400 transition-all duration-500 ease-in-out
-                    ${
+                {/* Handstroke underline SVG */}
+                <span className="absolute left-0 -bottom-1 w-full h-1 pointer-events-none">
+                  <svg
+                    viewBox="0 0 100 4"
+                    preserveAspectRatio="none"
+                    className={`w-full h-full transition-all duration-700 ease-[cubic-bezier(.77,0,.18,1)] ${
                       isActive(item.href)
-                        ? "w-full scale-x-100"
-                        : "w-0 scale-x-0 group-hover:scale-x-100 group-hover:w-full"
-                    }
-                  `}
-                  style={{
-                    transitionProperty: "width,transform",
-                    transformOrigin: "left",
-                    boxShadow: isActive(item.href) ? "0 1px 0 0 #f87171, 0 2px 8px 0 #f8717155" : undefined,
-                    filter: isActive(item.href) ? "blur(0.2px)" : undefined,
-                  }}
-                />
+                        ? "opacity-100 scale-x-100"
+                        : "opacity-0 scale-x-0 group-hover:opacity-100 group-hover:scale-x-100"
+                    }`}
+                    style={{ transformOrigin: "left" }}
+                  >
+                    <path
+                      d="M5,2 Q30,4 50,2 Q70,0 95,2"
+                      stroke="#d034ff81"
+                      strokeWidth="1.5"
+                      fill="none"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
               </Link>
             </motion.div>
           ))}
 
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, delay: 1.0 }}
+            key="mode-toggle-desktop-container"
+            initial={false}
+            animate={shouldShowToggle ? "visible" : "hidden"}
+            variants={{
+              visible: { opacity: 1, width: 'auto', transition: { duration: 0.3 } },
+              hidden: { opacity: 0, width: 0, transition: { duration: 0.3 } },
+            }}
+            // Ensure the ModeToggle is never clickable when hidden
+            className={shouldShowToggle ? "" : "pointer-events-none"}
           >
             <ModeToggle />
           </motion.div>
-
         </nav>
 
         {/* Mobile menu toggle */}
         <div className="md:hidden flex items-center gap-4">
-          <ModeToggle />
+         
+          <motion.div
+            key="mode-toggle-mobile-container"
+            initial={false}
+            animate={shouldShowToggle ? "visible" : "hidden"}
+            variants={{
+              visible: { opacity: 1, width: 'auto', marginRight: '16px', transition: { duration: 0.3 } },
+              hidden: { opacity: 0, width: 0, marginRight: '0px', transition: { duration: 0.3 } },
+            }}
+            className={shouldShowToggle ? "flex items-center" : "pointer-events-none"}
+          >
+            <ModeToggle />
+          </motion.div>
+
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setIsOpen(true)}
-            className="text-gray-900 dark:text-white"
             aria-label="Open menu"
           >
-            <Menu className="h-6 w-6" />
+            <Menu 
+              className={`h-6 w-6 transition-colors duration-300 ${
+                scrolled || !isHomePage ? "text-gray-900 dark:text-white" : "text-white"
+              }`}
+            />
           </Button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu (Remains unchanged) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -195,7 +246,7 @@ export default function Navbar() {
                 <X className="h-6 w-6" />
               </Button>
             </div>
-            <nav className="flex flex-col items-center justify-center h-[calc(100vh-100px)] gap-8 relative z-10">
+            <nav className="flex flex-col items-center bg-white/100 dark:bg-gray-950/100 justify-center h-[calc(100vh-0.5px)] gap-8 relative z-10">
               {currentNavItems.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -206,7 +257,7 @@ export default function Navbar() {
                 >
                   <Link
                     href={item.href}
-                    className={`text-4xl font-serif font-light text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors ${
+                    className={`text-4xl ${FONT_CLASS} font-light text-gray-900 dark:text-white hover:text-gray-600 dark:hover:text-gray-300 transition-colors ${
                       isActive(item.href) ? "underline" : ""
                     }`}
                     aria-current={isActive(item.href) ? "page" : undefined}
