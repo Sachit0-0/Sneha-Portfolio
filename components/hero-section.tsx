@@ -86,7 +86,7 @@ export default function ArtistBanner({
       src={backgroundImage || "/placeholder.svg"}
       alt="Artistic background"
       className="w-full h-full object-cover"
-      style={{ filter: 'brightness(0.6) contrast(1.1)' }}
+      style={{ filter: 'brightness(0.5) contrast(1.0)' }}
     />
   </motion.div>
 </div>
@@ -192,7 +192,7 @@ export default function ArtistBanner({
 
         {/* Scroll Indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
+          className="absolute bottom-8 z-30 flex w-full justify-end pr-2"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.2 }}
@@ -202,8 +202,8 @@ export default function ArtistBanner({
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             className="flex flex-col items-center gap-2"
           >
-            <span className="text-xs text-white/60 uppercase tracking-widest">Scroll</span>
-            <svg className="w-6 h-6 text-white/60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          
+            <svg className="w-6 h-6 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </motion.div>

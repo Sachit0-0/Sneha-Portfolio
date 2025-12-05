@@ -10,7 +10,7 @@ const processSteps = [
   {
     icon: Lightbulb,
     title: "Inspiration",
-    description: "It all starts with a spark—sometimes a walk in nature, a fleeting emotion, or a memory. I let these moments guide my imagination and fuel my creativity.",
+    description: "It all starts with a spark sometimes a walk in nature, a fleeting emotion, or a memory. I let these moments guide my imagination and fuel my creativity.",
     color: "#FF6B6B",
     details: "I find inspiration everywhere: in morning light, old photographs, conversations, and quiet moments of reflection.",
   },
@@ -19,21 +19,21 @@ const processSteps = [
     title: "Exploration",
     description: "I play with colors, textures, and techniques, letting curiosity lead the way. This is where ideas begin to take shape and possibilities unfold.",
     color: "#4ECDC4",
-    details: "Experimentation is key—mixing mediums, trying new approaches, and embracing the unexpected discoveries along the way.",
+    details: "Experimentation is key mixing mediums, trying new approaches, and embracing the unexpected discoveries along the way.",
   },
   {
     icon: Layers,
     title: "Creation",
     description: "Layer by layer, I build the piece, adding depth and meaning. Each stroke and detail is a step closer to the story I want to tell.",
     color: "#FFE66D",
-    details: "This is where patience meets passion—carefully building up the artwork while staying open to how it wants to evolve.",
+    details: "This is where patience meets passion carefully building up the artwork while staying open to how it wants to evolve.",
   },
   {
     icon: Sparkles,
     title: "Refinement",
     description: "The final touches matter most. I spend time perfecting details, adjusting balance, and making sure the artwork feels complete before sharing it.",
     color: "#B794F6",
-    details: "These finishing moments are magical—when everything comes together and the piece finally says what I intended it to say.",
+    details: "These finishing moments are magical when everything comes together and the piece finally says what I intended it to say.",
   },
 ]
 

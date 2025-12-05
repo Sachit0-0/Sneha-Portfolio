@@ -60,13 +60,8 @@ export default function AnimatedGallery() {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '2rem' }}>
             <Link href="/gallery">
-                <Button
-                    size="lg"
-                    className="bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full p-8 m-8 font-medium group"
-                >
-                    View All Work
-                    <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </Button>
+<button className="hover:brightness-110 hover:animate-pulse font-bold py-3 px-6 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 text-white">View All Gallery</button>
+                
             </Link>
         </div>
         </>

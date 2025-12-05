@@ -4,6 +4,7 @@ import ProcessSection from "@/components/process-section"
 import ContactSection from "@/components/contact-section"
 import AnimatedGallery from "@/components/animatedGallery"
 
+
 export default function Home() {
   return (
     <>
@@ -21,9 +22,10 @@ export default function Home() {
           <section id="gallery" className="min-h-screen bg-gray-50 dark:bg-[#11151c]">
             <AnimatedGallery/>
           </section>
-          <section id="process" className=" bg-gray-50 dark:bg-[#11151c]">
+          <section id="process" className=" pt-28 bg-gray-50 dark:bg-[#11151c]">
             <ProcessSection />
           </section>
+
           <section id="contact" className="bg-gray-50 dark:bg-[#11151c]">
             <ContactSection />
           </section>

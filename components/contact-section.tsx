@@ -33,7 +33,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" ref={containerRef} className=" md:py-32 relative overflow-hidden">
-      {/* Background elements */}
+   
       <div className="absolute inset-0">
         <motion.div
           className="absolute top-0 right-0 w-1/3 h-1/3  to-transparent rounded-full blur-3xl"
