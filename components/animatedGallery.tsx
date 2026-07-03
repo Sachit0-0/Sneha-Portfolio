@@ -60,7 +60,7 @@ export default function AnimatedGallery() {
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '2rem' }}>
             <Link href="/gallery">
-<button className="hover:brightness-110 hover:animate-pulse font-bold py-3 px-6 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 text-white">View All Gallery</button>
+<button className="hover:brightness-110 hover:animate-pulse font-bold py-3 px-6 rounded-full bg-gradient-to-r from-blue-500 to-pink-500 uppercase text-white">Enter Archive Page</button>
                 
             </Link>
         </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
@@ -34,23 +34,21 @@ const artworksData = [
   { id: 13, image: thirteen },
 ]
 
+// how many thumbnails to render on each side of the selected one
+const THUMB_WINDOW = 4
+
 export default function GalleryGrid() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
   const artworks = useMemo(() => artworksData, [])
 
-  const nextImage = () => {
-    if (selectedIndex !== null) {
-      setSelectedIndex((selectedIndex + 1) % artworks.length)
-    }
-  }
+  const nextImage = useCallback(() => {
+    setSelectedIndex((prev) => (prev === null ? null : (prev + 1) % artworks.length))
+  }, [artworks.length])
 
-  const prevImage = () => {
-    if (selectedIndex !== null) {
-      setSelectedIndex(selectedIndex === 0 ? artworks.length - 1 : selectedIndex - 1)
-    }
-  }
+  const prevImage = useCallback(() => {
+    setSelectedIndex((prev) => (prev === null ? null : prev === 0 ? artworks.length - 1 : prev - 1))
+  }, [artworks.length])
 
-  // Close modal on Escape key
   useEffect(() => {
     if (selectedIndex === null) return
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -60,46 +58,55 @@ export default function GalleryGrid() {
     }
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [selectedIndex])
+  }, [selectedIndex, nextImage, prevImage])
+
+  // Only render thumbnails near the current selection instead of all 13 every open
+  const visibleThumbIndices = useMemo(() => {
+    if (selectedIndex === null) return []
+    const indices: number[] = []
+    for (let i = -THUMB_WINDOW; i <= THUMB_WINDOW; i++) {
+      const idx = (selectedIndex + i + artworks.length) % artworks.length
+      if (!indices.includes(idx)) indices.push(idx)
+    }
+    return indices
+  }, [selectedIndex, artworks.length])
 
   return (
     <>
       {/* Modern Grid Gallery */}
       <div className="min-h-screen p-4 md:p-8">
-        <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {artworks.map((artwork, index) => (
             <motion.div
               key={artwork.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
+              style={{ contentVisibility: "auto", containIntrinsicSize: "0 500px" }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "100px" }}
+              transition={{ duration: 0.4, delay: Math.min(index, 6) * 0.05 }}
               className="group relative aspect-[3/4] cursor-pointer"
               onClick={() => setSelectedIndex(index)}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-2xl" />
-              <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-lg group-hover:shadow-2xl transition-all duration-300">
+              <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-lg group-hover:shadow-xl transition-shadow duration-300 ring-1 ring-black/5 group-hover:ring-black/10">
                 <Image
-                  src={artwork.image || "/placeholder.svg"}
+                  src={artwork.image}
                   alt={`Artwork ${artwork.id}`}
                   fill
-                  sizes="(max-width: 768px) 100vw, 25vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  quality={70}
+                  className="object-cover"
                   placeholder="blur"
-                  loading="lazy"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  priority={index < 4}
                 />
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-             
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-3 left-3 right-3 z-10 text-white text-xs font-medium tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-1 group-hover:translate-y-0">
+                  View
+                </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
 
       {/* Lowkey Coming Soon Section */}
@@ -116,10 +123,10 @@ export default function GalleryGrid() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/95"
             style={{ width: "100vw", height: "100vh" }}
           >
-            {/* Close Button */}
             <button
               onClick={() => setSelectedIndex(null)}
               className="absolute top-6 right-6 z-30 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white backdrop-blur-sm"
@@ -128,12 +135,10 @@ export default function GalleryGrid() {
               <X className="w-6 h-6" />
             </button>
 
-            {/* Image Counter */}
             <div className="absolute top-6 left-6 z-30 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm text-white text-sm">
               {selectedIndex + 1} / {artworks.length}
             </div>
 
-            {/* Navigation Buttons */}
             <button
               onClick={prevImage}
               className="absolute left-6 top-1/2 -translate-y-1/2 z-30 p-3 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white backdrop-blur-sm"
@@ -150,47 +155,54 @@ export default function GalleryGrid() {
               <ChevronRight className="w-6 h-6" />
             </button>
 
-            {/* Main Image */}
+            {/* Main Image — fill inside a bounded box instead of fixed width/height,
+                so it can't fight with object-contain or force the wrong srcset */}
             <motion.div
               key={selectedIndex}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="flex items-center justify-center w-full h-full"
+              transition={{ duration: 0.15 }}
+              className="relative w-[90vw] h-[90vh]"
             >
               <Image
-                src={artworks[selectedIndex].image || "/placeholder.svg"}
+                src={artworks[selectedIndex].image}
                 alt={`Artwork ${artworks[selectedIndex].id}`}
-                className="object-contain rounded-lg shadow-2xl max-h-[90vh] max-w-[90vw] w-auto h-auto"
-                width={900}
-                height={1200}
-                loading="eager"
+                fill
+                className="object-contain rounded-lg shadow-2xl"
+                sizes="90vw"
+                quality={85}
+                placeholder="blur"
+                priority
               />
             </motion.div>
 
-            {/* Thumbnail Strip */}
+            {/* Thumbnail Strip — only render a window around the current image,
+                not all 13, so opening the modal doesn't fire 13 extra loads */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30">
               <div className="flex gap-2 p-3 bg-black/50 backdrop-blur-sm rounded-full max-w-[80vw] overflow-x-auto">
-                {artworks.map((artwork, index) => (
-                  <button
-                    key={artwork.id}
-                    onClick={() => setSelectedIndex(index)}
-                    className={`relative w-10 h-10 rounded-lg overflow-hidden transition-all duration-200 ${
-                      index === selectedIndex ? "ring-2 ring-white scale-110" : "opacity-60 hover:opacity-100"
-                    }`}
-                    aria-label={`View artwork ${artwork.id}`}
-                  >
-                    <Image
-                      src={artwork.image || "/placeholder.svg"}
-                      alt={`Thumbnail ${artwork.id}`}
-                      fill
-                      sizes="40px"
-                      className="object-cover"
-                      loading="lazy"
-                    />
-                  </button>
-                ))}
+                {visibleThumbIndices.map((index) => {
+                  const artwork = artworks[index]
+                  return (
+                    <button
+                      key={artwork.id}
+                      onClick={() => setSelectedIndex(index)}
+                      className={`relative w-10 h-10 shrink-0 rounded-lg overflow-hidden transition-all duration-200 ${
+                        index === selectedIndex ? "ring-2 ring-white scale-110" : "opacity-60 hover:opacity-100"
+                      }`}
+                      aria-label={`View artwork ${artwork.id}`}
+                    >
+                      <Image
+                        src={artwork.image}
+                        alt={`Thumbnail ${artwork.id}`}
+                        fill
+                        sizes="40px"
+                        quality={40}
+                        className="object-cover"
+                      />
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </motion.div>

@@ -18,7 +18,7 @@ export default function ArtistBanner({
   title = "SNEHA RAI",
   subtitle = "Visual Artist",
   description = "Creating bold, expressive works that challenge perception and evoke emotion",
-  ctaText = "Explore Gallery",
+  ctaText = "Explore Archive Page",
   ctaHref = "/gallery",
   backgroundImage = bg.src,
 }: ArtistBannerProps) {
